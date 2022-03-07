@@ -48,7 +48,10 @@ with open(output_filename) as f:
         with open(output_filename + str(i), 'w') as img_output:
             img_output.write(each_img)
         for each_good_img in os.listdir("successful_img_captures"):
-            with open(os.path.join("successful_img_captures", each_good_img)) as good_img:
+            full_path = os.path.join("successful_img_captures", each_good_img)
+            if not os.path.isfile(full_path):
+                continue
+            with open(full_path) as good_img:
                 if each_img == good_img.read():
                     print(f"Image {i} is the same as {each_good_img}")
 

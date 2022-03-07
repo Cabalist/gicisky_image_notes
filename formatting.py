@@ -28,7 +28,6 @@ def create_image_from_binary(data, width, height):
     data = [cmap[bit] for bit in data]
 
     im.putdata(data)
-    im.show()
     return im
 
 
