@@ -1,1 +1,3 @@
 bugreport*.zip
+/sample_image_*.txt
+geckodriver.log
