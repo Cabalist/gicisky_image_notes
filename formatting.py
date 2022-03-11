@@ -83,8 +83,11 @@ for each_file in os.listdir("successful_img_captures"):
                 hex_formatted_dataline = "".join(get_chunks(dataline, 2))
                 big_endian_hex_formatted_dataline = "".join(reversed(get_chunks(dataline, 2)))
 
-                bin_dataline = list(get_binary_chunks(big_endian_hex_formatted_dataline, 2))
+                bin_dataline = list(get_binary_chunks(hex_formatted_dataline, 2))
+                big_endian_bin_dataline = list(get_binary_chunks(big_endian_hex_formatted_dataline, 2))
+
                 bin_formatted_dataline = "".join(f"{c:08b}" for c in bin_dataline)
+                big_endian_bin_formatted_dataline = "".join(f"{c:08b}" for c in big_endian_bin_dataline)
                 if len(bin_formatted_dataline) > longest_dataline:
                     longest_dataline = len(bin_formatted_dataline)
 
@@ -100,7 +103,7 @@ for each_file in os.listdir("successful_img_captures"):
                 #
                 # formatted_dataline = " ".join([line_start, line_length_in_hex, unknown_1, remaining_dataline])
 
-                all_data.append(bin_formatted_dataline)
+                all_data.append(big_endian_bin_formatted_dataline)
                 hex_output.write(f"{hex_formatted_dataline}\n")
                 big_endian_hex_output.write(f"{big_endian_hex_formatted_dataline}\n")
                 bin_output.write(bytes(bin_dataline))
