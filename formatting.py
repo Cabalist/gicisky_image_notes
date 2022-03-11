@@ -12,7 +12,7 @@ def get_chunks(a_str, chunk_size):
 def get_binary_chunks(a_str, chunk_size):
     for each_byte in get_chunks(a_str, chunk_size):
         # print(f"{int(each_byte, 16):08b}")
-        yield f"{int(each_byte, 16):08b}"
+        yield int(each_byte, 16)
 
 
 def create_image_from_binary(data, width, height):
@@ -51,7 +51,7 @@ for each_file in os.listdir("successful_img_captures"):
     with open(os.path.join("successful_img_captures", each_file)) as f, \
             open(os.path.join(output_dir, "formatted_image_data.hex"), "w") as hex_output, \
             open(os.path.join(output_dir, "big_endian_formatted_image_data.hex"), "w") as big_endian_hex_output, \
-            open(os.path.join(output_dir, "formatted_image_data.bin"), "w") as bin_output:
+            open(os.path.join(output_dir, "formatted_image_data.bin"), "wb") as bin_output:
 
         image_data = ""
         first_line = True
@@ -83,7 +83,8 @@ for each_file in os.listdir("successful_img_captures"):
                 hex_formatted_dataline = "".join(get_chunks(dataline, 2))
                 big_endian_hex_formatted_dataline = "".join(reversed(get_chunks(dataline, 2)))
 
-                bin_formatted_dataline = "".join(get_binary_chunks(big_endian_hex_formatted_dataline, 2))
+                bin_dataline = list(get_binary_chunks(big_endian_hex_formatted_dataline, 2))
+                bin_formatted_dataline = "".join(f"{c:08b}" for c in bin_dataline)
                 if len(bin_formatted_dataline) > longest_dataline:
                     longest_dataline = len(bin_formatted_dataline)
 
@@ -102,7 +103,7 @@ for each_file in os.listdir("successful_img_captures"):
                 all_data.append(bin_formatted_dataline)
                 hex_output.write(f"{hex_formatted_dataline}\n")
                 big_endian_hex_output.write(f"{big_endian_hex_formatted_dataline}\n")
-                bin_output.write(f"{bin_formatted_dataline}\n")
+                bin_output.write(bytes(bin_dataline))
         print(len(all_data))
 
         all_data = ["e" * (longest_dataline - len(dl)) + dl for dl in all_data]
