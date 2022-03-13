@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 from PIL import Image
 
@@ -16,8 +16,6 @@ def get_binary_chunks(a_str, chunk_size):
 
 
 def create_image_from_binary(data, width, height):
-    print(f"Height: {height}")
-    print(f"Width: {width}")
 
     im = Image.new('L', (width, height), "black")
 
@@ -42,16 +40,18 @@ def create_ascii_image_from_binary(data, width, height):
                 output.write(cmap[c])
             output.write("\n")
 
-for each_file in os.listdir("successful_img_captures"):
-    if not each_file.endswith(".txt"):
-        continue
-    output_dir = os.path.join("successful_img_captures", os.path.splitext(each_file)[0])
-    os.makedirs(output_dir, exist_ok=True)
 
-    with open(os.path.join("successful_img_captures", each_file)) as f, \
-            open(os.path.join(output_dir, "formatted_image_data.hex"), "w") as hex_output, \
-            open(os.path.join(output_dir, "big_endian_formatted_image_data.hex"), "w") as big_endian_hex_output, \
-            open(os.path.join(output_dir, "formatted_image_data.bin"), "wb") as bin_output:
+successful_img_captures = Path("successful_img_captures")
+for each_file in successful_img_captures.iterdir():
+    if not each_file.suffix == ".txt":
+        continue
+    output_dir = successful_img_captures / each_file.stem
+    output_dir.mkdir(exist_ok=True)
+
+    with open(each_file) as f, \
+            open(output_dir / "formatted_image_data.hex", "w") as hex_output, \
+            open(output_dir / "big_endian_formatted_image_data.hex", "w") as big_endian_hex_output, \
+            open(output_dir / "formatted_image_data.bin", "wb") as bin_output:
 
         image_data = ""
         first_line = True
@@ -64,7 +64,6 @@ for each_file in os.listdir("successful_img_captures"):
                 # On the first line is the image size.  In this case:
                 # 983a0000 -> 0000 3a98 (15000)
                 image_size = each_line[8:16]
-                print(image_size)
                 # output.write(image_size + "\n")
                 first_line = False
                 remaining_line = each_line[16:]
@@ -107,10 +106,9 @@ for each_file in os.listdir("successful_img_captures"):
                 hex_output.write(f"{hex_formatted_dataline}\n")
                 big_endian_hex_output.write(f"{big_endian_hex_formatted_dataline}\n")
                 bin_output.write(bytes(bin_dataline))
-        print(len(all_data))
 
         all_data = ["e" * (longest_dataline - len(dl)) + dl for dl in all_data]
         bitmap = create_image_from_binary("".join(all_data), longest_dataline, len(all_data))
-        bitmap.save(os.path.join(output_dir, "bitmap.bmp"))
+        bitmap.save(output_dir / "bitmap.bmp")
 
         # create_ascii_image_from_binary("".join(all_data), longest_dataline, len(all_data))
