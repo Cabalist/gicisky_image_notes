@@ -1,0 +1,119 @@
+╔═══════════════════════════════════════════════════════╗
+║Big Endian 8px line each row moves 8px towards the end.║
+╚═══════════════════════════════════════════════════════╝
+
+
+ffffffff            380000                                    ffffff00                80000010 40 12 75
+⇧⇧⇧⇧⇧⇧⇧⇧            ⬆⬆⬆⬆⬆⬆                                    ⇧⇧⇧⇧⇧⇧⇧⇧                ⬆⬆⬆⬆⬆⬆⬆⬆ ⬆⬆ ⬆⬆ ⬆⬆
+||||||||                                                      ||||||||                |||||||| || || ||
+ 32px Whitespace                                              |||||| 8px line         |||||||| || ||  End of Line
+                                                               12px Whitespace        |||||||| ||  Line Length in bytes
+                                                                                      ||||||||  Data bytes
+                                                                                      ||||||||
+                                                                                      1000 0000 0000 0000 0000 0000 0001 0000
+                                                                                      Bit pattern for compression markers
+
+
+This line should be 504px of Whitespace and 8px of black.
+0x1F8|0x8
+
+512px line
+52px total are explicitly bitmapped
+460px are compressed into nothing
+'380000' is either 0x38 -> 56, 0x3800 -> 14336, or 0x380000 -> 3670016
+Bit pattern is:  0011 1000 0000 0000 0000 0000
+
+0x38/0x40 -> 7/8
+
+
+
+ffffffff            370000                                  ffffff00ff                80000020 40 13 75
+ffffffff            360000                                ffffff00ffff                80000040 40 14 75
+ffffffff            350000  0001           00                   ffffff                80000030 40 14 75
+ffffffff            340000  0001           00                 ffffffff                80000060 40 15 75
+ffffffff            330000  0001           00               ffffffffff                800000c0 40 16 75
+ffffffff            320000  0001           00             ffffffffffff                80000180 40 17 75
+ffffffff            310000  0001           00           ffffffffffffff                80000300 40 18 75
+ffffffff            2f0000  0002           00 0002            ffffffff                800000d0 40 17 75
+ffffffff            2d0000  0003           00 0003            ffffffff                800000d0 40 17 75
+ffffffff            2b0000  0004           00 0004            ffffffff                800000d0 40 17 75
+ffffffff            290000  0005           00 0005            ffffffff                800000d0 40 17 75
+ffffffff            270000  0006           00 0006            ffffffff                800000d0 40 17 75
+ffffffff            250000  0007           00 0007            ffffffff                800000d0 40 17 75
+ffffffff            230000  0008           00 0008            ffffffff                800000d0 40 17 75
+ffffffff            210000  0009           00 0009            ffffffff                800000d0 40 17 75
+ffffffff            1f0000  000a           00 000a            ffffffff                800000d0 40 17 75
+ffffffff            1d0000  000b           00 000b            ffffffff                800000d0 40 17 75
+ffffffff            1b0000  000c           00 000c            ffffffff                800000d0 40 17 75
+ffffffff            190000  000d           00 000d            ffffffff                800000d0 40 17 75
+ffffffff            170000  000e           00 000e            ffffffff                800000d0 40 17 75
+ffffffff            150000  000f           00 000f            ffffffff                800000d0 40 17 75
+ffffffff            130000  120000         00 120000          ffffffff                800000d0 40 19 75
+ffffffff            000f    130000         00 130000          ffffffff                800000d0 40 18 75
+ffffffff            000d    140000         00 140000          ffffffff                800000d0 40 18 75
+ffffffff            000b    150000         00 150000          ffffffff                800000d0 40 18 75
+ffffffff            0009    160000         00 160000          ffffffff                800000d0 40 18 75
+ffffffff            0007    170000         00 170000          ffffffff                800000d0 40 18 75
+ffffffff            0005    180000         00 180000          ffffffff                800000d0 40 18 75
+ffffffffffffffffff          190000         00 190000          ffffffff                80000050 40 1b 75
+ffffffffffffff              1a0000         00 1a0000          ffffffff                80000050 40 19 75
+ffffffffff                  1b0000         00 1b0000          ffffffff                80000050 40 17 75
+ffffffff                    1b0000         00 1c0000          ffffffff                80000050 40 16 75
+ffffffff                    1a0000         00 1d0000          ffffffff                80000050 40 16 75
+ffffffff                    190000         00 1e0000          ffffffff                80000050 40 16 75
+ffffffff                    180000         00 1f0000          ffffffff                80000050 40 16 75
+ffffffff                    170000         00 200000          ffffffff                80000050 40 16 75
+ffffffff                    160000         00 210000          ffffffff                80000050 40 16 75
+ffffffff                    150000         00 220000          ffffffff                80000050 40 16 75
+ffffffff                    140000         00 230000          ffffffff                80000050 40 16 75
+ffffffff                    130000         00 240000          ffffffff                80000050 40 16 75
+ffffffff                    120000         00 250000          ffffffff                80000050 40 16 75
+ffffffff           000f                    00 260000          ffffffff                80000050 40 15 75
+ffffffff           000e                    00 270000          ffffffff                80000050 40 15 75
+ffffffff           000d                    00 280000          ffffffff                80000050 40 15 75
+ffffffff           000c                    00 290000          ffffffff                80000050 40 15 75
+ffffffff           000b                    00 2a0000          ffffffff                80000050 40 15 75
+ffffffff           000a                    00 2b0000          ffffffff                80000050 40 15 75
+ffffffff           0009                    00 2c0000          ffffffff                80000050 40 15 75
+ffffffff           0008                    00 2d0000          ffffffff                80000050 40 15 75
+ffffffff           0007                    00 2e0000          ffffffff                80000050 40 15 75
+ffffffff           0006                    00 2f0000          ffffffff                80000050 40 15 75
+ffffffff           0005                    00 300000          ffffffff                80000050 40 15 75
+ffffffffffffffffffff                       00 310000          ffffffff                80000010 40 19 75
+ffffffffffffffffff                         00 320000          ffffffff                80000010 40 18 75
+ffffffffffffffff                           00 330000          ffffffff                80000010 40 17 75
+ffffffffffffff                             00 340000          ffffffff                80000010 40 16 75
+ffffffffffff                               00 350000          ffffffff                80000010 40 15 75
+ffffffffff                                 00 360000          ffffffff                80000010 40 14 75
+ffffffff                                   00 370000          ffffffff                80000010 40 13 75
+ffffff00                                      380000          ffffffff                80000010 40 12 75
+ffff00ff                                      380000          ffffffff                80000010 40 12 75
+ff00ffff                                      380000          ffffffff                80000010 40 12 75
+00ffffff                                      380000          ffffffff                80000010 40 12 75
+
+
+000f = 110000
+000e = 100000
+000d = 0F0000
+000c = 0E0000
+000b = 0D0000
+000a = 0C0000
+0009 = 0B0000
+0008 = 0A0000
+0007 = 090000
+0006 = 080000
+0005 = 070000
+0004 = 060000
+0003 = 050000
+0002 = 040000
+0001 = 030000
+
+
+0x380000 is actually 56B which is 448b.  This leaves 64b or 8B.  There are 4 bytes at the end and 4 bytes at the beginning.
+
+It is decremented everytime a byte is added to the data
+0x120000 .. 0x380000 is straightforward but for values less than 0x120000 it switches to a different format
+This is mapped in the table above.  It probably is more complicated than this but we can't see any examples here.
+
+
+SO parsing-wise if I gobble 4 zeros I need to gobble 2 more characters to get the value I'm looking for.
