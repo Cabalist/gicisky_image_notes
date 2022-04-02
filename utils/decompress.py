@@ -60,7 +60,7 @@ def get_binary_of_compression_pattern(byte) -> str:
     return f"{int(reverse_byte, 16):032b}"[::-1]
 
 
-def split_label_line_data(dataline, bin_compression_pattern) -> List[Tuple[str, str]]:
+def split_label_line_data(dataline: str, bin_compression_pattern: str) -> List[Tuple[str, str]]:
     split_line = []
     current_data = ""
     remaining_line = dataline
