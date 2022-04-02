@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from utils.annotate import annotate
+from utils.common import DATA_LINE_START_COORDS
 
 SKIPLIST = [  # These are blank lines that don't need to be included hundreds/thousands of times in our annotations:
     "751240100000800000000000003800000000",
@@ -53,12 +54,12 @@ if __name__ == "__main__":
         datalines = convert_image_data_to_datalines(image_data)
         skip_count = 0
         with open(Path('annotations', dump_path.stem + ".md"), 'w') as output:
-            for each_dataline in datalines:
+            for i, each_dataline in enumerate(datalines):
                 if each_dataline in SKIPLIST:
                     skip_count += 1
                     continue
                 # TODO fill in the blanks below
-                output.write(f"\nDataline #: {0} Starting at coordinates: ({0}, {0})\n")
+                output.write(f"\nDataline #: {i} Starting at coordinates: {DATA_LINE_START_COORDS[i]}\n")
                 output.write("```diff\n")
                 output.write(annotate(each_dataline))
                 output.write('\n```\n')

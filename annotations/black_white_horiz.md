@@ -1,5 +1,5 @@
 
-Dataline #: 0 Starting at coordinates: (0, 0)
+Dataline #: 117 Starting at coordinates: (304, 149)
 ```diff
 75 17 40 10010080 00000000 0600 ffffff 00002d ffffffff
 II II II IIIIIIII DDDDDDDD IIII DDDDDD IIIIII DDDDDDDD
