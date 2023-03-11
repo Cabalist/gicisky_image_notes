@@ -5,7 +5,7 @@ import uuid
 import zipfile
 from pathlib import Path
 
-# Install Gicisky app (https://www.gicisky.net/app/ble-app-release-v3.0.24.apk)
+# Install Gicisky app (http://a.picksmart.cn:8088/picksmart/app/ble-tag-english-app-release-v3.1.32.apk)
 # Register/Login
 # Design templates here: http://a.picksmart.cn:8081
 
